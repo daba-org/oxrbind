@@ -1,0 +1,13 @@
+[package]
+name = "oxr_binding"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[build-dependencies]
+bindgen = "0.69.4"
+cmake = "0.1.50"
+tracing = "0.1.40"
+tracing-appender = "0.2.3"
+tracing-subscriber = "0.3.18"

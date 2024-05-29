@@ -1,0 +1,13 @@
+[package]
+name = "oxrbind"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+oxr_binding = { version = "0.1.0", path = "crates/oxr_binding" }
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/oxr_binding"
+]

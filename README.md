@@ -1,7 +1,3 @@
-# Table of Content
-
-[toc]
-
 # Overview
 
 *oxrbind* is a safe binding for the *OpenXR SDK*.

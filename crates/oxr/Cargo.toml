@@ -1,0 +1,11 @@
+[package]
+name = "oxr"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+oxr_binding = { version = "0.1.0", path = "../oxr_binding" }
+oxr_macros = { version = "0.1.0", path = "../oxr_macros" }
+
+[lib]
+crate-type = ["dylib"]

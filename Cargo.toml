@@ -8,6 +8,6 @@ oxr_binding = { version = "0.1.0", path = "crates/oxr_binding" }
 
 [workspace]
 resolver = "2"
-members = [
+members = [ "crates/oxr",
     "crates/oxr_binding"
-]
+, "crates/oxr_macros"]

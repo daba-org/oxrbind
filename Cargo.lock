@@ -242,6 +242,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39"
 
 [[package]]
+name = "oxr"
+version = "0.1.0"
+dependencies = [
+ "oxr_binding",
+ "oxr_macros",
+]
+
+[[package]]
 name = "oxr_binding"
 version = "0.1.0"
 dependencies = [
@@ -250,6 +258,14 @@ dependencies = [
  "tracing",
  "tracing-appender",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "oxr_macros"
+version = "0.1.0"
+dependencies = [
+ "quote",
+ "syn",
 ]
 
 [[package]]

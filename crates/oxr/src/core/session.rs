@@ -1,7 +1,8 @@
-use oxr_binding::{
-    XrResult, XrSessionCreateFlags, XrSessionCreateInfo, XrStructureType, XrSystemId,
-    XrViewConfigurationType,
-};
+use oxr_binding::{XrResult, XrSessionCreateFlags, XrStructureType, XrSystemId, XrViewConfigurationType};
+
+use crate::core::space::{ReferenceSpaceCreateInfo, Space};
+
+use super::space::MySpace;
 
 #[derive(Debug)]
 pub struct SessionBeginInfo {
@@ -18,10 +19,11 @@ pub struct SessionCreateInfo {
     pub system_id: XrSystemId,
 }
 
+
 pub trait Session {
     fn new(create_info: SessionCreateInfo) -> Result<Self, XrResult>
-    where
-        Self: Sized;
+        where
+            Self: Sized;
 
     fn clean_up(&mut self) -> Result<(), XrResult>;
 
@@ -30,14 +32,24 @@ pub trait Session {
     fn end(&self) -> Result<(), XrResult>;
 
     fn request_exit(&self) -> Result<(), XrResult>;
+
+    fn create_reference_space(
+        &self,
+        create_info: ReferenceSpaceCreateInfo,
+    ) -> impl Space + Sized;
+
+    // fn create_action_space(
+    //     &self,
+    //     create_info: ActionSpaceCreateInfo
+    // ) -> impl Space + Sized;
 }
 
 pub struct MySession {}
 
 impl Session for MySession {
     fn new(create_info: SessionCreateInfo) -> Result<Self, XrResult>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
         todo!()
     }
@@ -53,8 +65,12 @@ impl Session for MySession {
     fn end(&self) -> Result<(), XrResult> {
         todo!()
     }
-    
+
     fn request_exit(&self) -> Result<(), XrResult> {
         todo!()
+    }
+
+    fn create_reference_space(&self, create_info: ReferenceSpaceCreateInfo) -> impl Space + Sized {
+        MySpace::new(create_info)
     }
 }

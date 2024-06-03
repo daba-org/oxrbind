@@ -1,10 +1,10 @@
-use std::{ffi::CStr, mem::transmute, os::raw::c_char, ptr::null};
-
-use oxr_macros::xr_instance;
+use std::{ffi::CStr, mem::transmute, os::raw::c_char};
 
 use oxr_binding::*;
 
-use super::session::{MySession, Session, SessionCreateInfo};
+use crate::core::system::SystemGetInfo;
+
+use super::{action_set::{ActionSet, ActionSetCreateInfo, MyActionSet}, session::{MySession, Session, SessionCreateInfo}};
 
 #[derive(Debug)]
 struct ApplicationInfo {
@@ -45,8 +45,24 @@ struct ApiLayerProperties {
     pub description: String,
 }
 
+#[derive(Debug)]
+struct ViewConfigurationProperties {
+    pub type_: XrStructureType,
+    pub next: Option<std::os::raw::c_void>,
+    pub view_configuration_type: XrViewConfigurationType,
+    pub fox_mutable: XrBool32,
+}
 
-
+#[derive(Debug)]
+struct SystemProperties {
+    pub type_: XrStructureType,
+    pub next: Option<std::os::raw::c_void>,
+    pub system_id: XrSystemId,
+    pub vendor_id: u32,
+    pub system_name: String,
+    pub graphics_properties: XrSystemGraphicsProperties,
+    pub tracking_properties: XrSystemTrackingProperties,
+}
 
 
 trait Instance {
@@ -82,6 +98,38 @@ trait Instance {
         &self,
         create_info: SessionCreateInfo,
     ) -> impl Session + Sized;
+
+    fn enumerate_view_configurations(
+        &self,
+        system_id: XrSystemId,
+    ) -> Result<Vec<XrViewConfigurationType>, XrResult>;
+
+    fn get_view_configuration_properties(
+        &self,
+        system_id: XrSystemId,
+        view_configuration_type: XrViewConfigurationType,
+    ) -> Result<ViewConfigurationProperties, XrResult>;
+
+    fn get_system(
+        &self,
+        get_info: SystemGetInfo,
+    ) -> XrSystemId;
+
+    fn get_system_properties(
+        &self,
+        system_id: XrSystemId,
+    ) -> SystemProperties;
+
+    fn enumerate_environment_blend_modes(
+        &self,
+        system_id: XrSystemId,
+        view_configuration_type: XrViewConfigurationType,
+    ) -> Result<Vec<XrEnvironmentBlendMode>, XrResult>;
+
+    fn create_action_set(
+        &self,
+        create_info: ActionSetCreateInfo,
+    ) -> Result<impl ActionSet, XrResult>;
 }
 
 // #[xr_instance]
@@ -103,6 +151,12 @@ impl Instance for MyXrInstance {
         Ok(())
     }
 
+    fn enumerate_api_layer_properties(
+        &self,
+    ) -> Result<&Vec<ApiLayerProperties>, XrResult> {
+        Ok(&self.api_layers)
+    }
+
     fn enumerate_instance_extension_properties(
         &self,
         layer_name: String,
@@ -110,20 +164,40 @@ impl Instance for MyXrInstance {
         Ok(&self.instance_extensions)
     }
 
-    fn enumerate_api_layer_properties(
-        &self,
-    ) -> Result<&Vec<ApiLayerProperties>, XrResult> {
-        Ok(&self.api_layers)
-    }
-    
     fn create_session(
         &self,
         create_info: SessionCreateInfo,
     ) -> impl Session + Sized {
         MySession::new(create_info).unwrap()
     }
-}
 
+    fn enumerate_view_configurations(&self, system_id: XrSystemId) -> Result<Vec<XrViewConfigurationType>, XrResult> {
+        todo!()
+    }
+
+    fn get_view_configuration_properties(&self, system_id: XrSystemId, view_configuration_type: XrViewConfigurationType) -> Result<ViewConfigurationProperties, XrResult> {
+        todo!()
+    }
+
+    fn get_system(&self, get_info: SystemGetInfo) -> XrSystemId {
+        todo!()
+    }
+
+    fn get_system_properties(&self, system_id: XrSystemId) -> SystemProperties {
+        todo!()
+    }
+
+    fn enumerate_environment_blend_modes(&self, system_id: XrSystemId, view_configuration_type: XrViewConfigurationType) -> Result<Vec<XrEnvironmentBlendMode>, XrResult> {
+        todo!()
+    }
+
+    fn create_action_set(
+        &self,
+        create_info: ActionSetCreateInfo,
+    ) -> Result<impl ActionSet, XrResult> {
+        Ok(MyActionSet::new(create_info))
+    }
+}
 
 
 fn c_char_array_to_string(c_char_array: &[c_char; 128]) -> String {
